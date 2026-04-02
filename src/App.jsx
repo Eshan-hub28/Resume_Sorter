@@ -759,9 +759,8 @@ Return EXACTLY a JSON object with this schema:
                 style={{ 
                   minHeight: '90px', 
                   fontSize: '0.9rem',
-                  background: 'var(--color-bg)',
-                  border: '1px solid var(--color-border)',
-                  boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.05)'
+                  transition: 'all 0.2s ease',
+                  border: '1px solid var(--color-border)'
                 }} 
               />
             </div>
@@ -822,7 +821,7 @@ Return EXACTLY a JSON object with this schema:
                 return filtered.map((c) => {
                   const res = resultsMap[c._id]; const isSelected = selectedDbIds.has(c._id); const isActive = activeCandidateId === c._id;
                   return (
-                    <div key={c._id} className={`candidate-card ${isActive ? 'active' : ''}`} onClick={() => setActiveCandidateId(c._id)} style={{ borderLeft: isSelected ? '4px solid var(--color-primary)' : '4px solid transparent' }}>
+                    <div key={c._id} className={`candidate-card ${isActive ? 'active' : ''}`} onClick={(e) => { setActiveCandidateId(c._id); toggleSelection(c._id, e); }} style={{ borderLeft: isSelected ? '4px solid var(--color-primary)' : '4px solid transparent' }}>
                       <div onClick={(e) => toggleSelection(c._id, e)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: isSelected ? 'var(--color-primary)' : 'rgba(255,255,255,0.05)', borderRadius: '6px', width: '22px', height: '22px', border: isSelected ? 'none' : '2px solid var(--color-border)', transition: 'all 0.2s' }}>
                         {isSelected && <CheckCircle2 size={16} color="#fff" />}
                       </div>
