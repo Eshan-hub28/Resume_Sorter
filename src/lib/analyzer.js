@@ -147,6 +147,10 @@ Return a JSON object strictly matching this schema:
         await new Promise(r => setTimeout(r, 6000));
       }
     } catch (e) {
+      if (e.name === 'AbortError') {
+        throw new Error('Analysis cancelled by user.');
+      }
+      
       console.error(e);
       if (onProgress) onProgress({ candidateId: candidate.id, status: 'error', error: e.message, name: candidate.name });
 

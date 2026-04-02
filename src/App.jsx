@@ -666,7 +666,7 @@ Return EXACTLY a JSON object with this schema:
               </div>
             </div>
 
-            <button onClick={handleSelfAnalyze} disabled={isSelfAnalyzing} style={{ background: 'linear-gradient(135deg, var(--color-warning), #d97706)', color: 'white', border: 'none', borderRadius: 'var(--radius-md)', padding: '1rem 3rem', cursor: 'pointer', fontWeight: 700, fontSize: '1rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', boxShadow: '0 4px 20px rgba(245,158,11,0.3)' }}>
+            <button onClick={handleSelfAnalyze} disabled={isSelfAnalyzing} style={{ background: 'linear-gradient(135deg, #0ea5e9, #2563eb)', color: 'white', border: 'none', borderRadius: 'var(--radius-md)', padding: '1rem 3rem', cursor: 'pointer', fontWeight: 700, fontSize: '1rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', boxShadow: '0 4px 20px rgba(14,165,233,0.3)' }}>
               {isSelfAnalyzing ? <><Star size={18} className="spin" /> Analyzing...</> : <><Play size={18} fill="currentColor" /> Analyze My Resume</>}
             </button>
 
@@ -739,9 +739,23 @@ Return EXACTLY a JSON object with this schema:
               <input type="file" multiple accept=".pdf" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileUpload} />
             </div>
 
-            <div style={{ padding: '1rem', borderBottom: '1px solid var(--color-border)' }}>
-              <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem', display: 'block' }}>Job Requirements / Prompt</label>
-              <textarea className="input-base" placeholder="e.g. Seeking a Senior React Developer with Node.js experience." value={jobRequirements} onChange={(e) => setJobRequirements(e.target.value)} style={{ minHeight: '80px', fontSize: '0.85rem' }} />
+            <div style={{ padding: '1.25rem', borderBottom: '1px solid var(--color-border)', background: 'var(--color-surface)' }}>
+              <label style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}>
+                <Briefcase size={16} /> Target Role Requirements
+              </label>
+              <textarea 
+                className="input-base" 
+                placeholder="e.g. Seeking a Senior React Developer with Node.js experience, strong system design skills, and leadership qualities..." 
+                value={jobRequirements} 
+                onChange={(e) => setJobRequirements(e.target.value)} 
+                style={{ 
+                  minHeight: '90px', 
+                  fontSize: '0.9rem',
+                  background: 'var(--color-bg)',
+                  border: '1px solid var(--color-border)',
+                  boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.05)'
+                }} 
+              />
             </div>
 
             {/* Top N Filter - Manual Input */}
@@ -915,7 +929,7 @@ Return EXACTLY a JSON object with this schema:
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }}
-              style={{ width: '500px', background: 'linear-gradient(145deg, #1a172e 0%, #12101e 100%)', padding: '2.5rem', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(168, 85, 247, 0.2)', boxShadow: '0 25px 60px rgba(0,0,0,0.6), 0 0 40px rgba(168,85,247,0.1)', position: 'relative', overflow: 'hidden' }}
+              style={{ width: '500px', background: 'var(--color-surface)', padding: '2.5rem', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(168, 85, 247, 0.2)', boxShadow: '0 25px 60px rgba(0,0,0,0.6), 0 0 40px rgba(168,85,247,0.1)', position: 'relative', overflow: 'hidden' }}
             >
               {/* Decorative glow */}
               <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '120px', height: '120px', background: 'var(--color-primary)', filter: 'blur(80px)', opacity: 0.15, borderRadius: '50%' }}></div>
@@ -1005,11 +1019,11 @@ Return EXACTLY a JSON object with this schema:
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }}
-              className="glass-panel" style={{ width: '500px', background: 'var(--color-sidebar)', padding: '2.5rem', maxHeight: '80vh', overflowY: 'auto' }}
+              className="glass-panel" style={{ width: '500px', background: 'var(--color-surface)', padding: '2.5rem', maxHeight: '80vh', overflowY: 'auto' }}
             >
               <div className="flex-row justify-between items-center" style={{ marginBottom: '2rem' }}>
                 <h3 style={{ fontSize: '1.5rem', margin: 0 }}><HelpCircle size={24} /> How to Use</h3>
-                <button onClick={() => setShowHelp(false)} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}><X size={24} /></button>
+                <button onClick={() => setShowHelp(false)} style={{ background: 'none', border: 'none', color: 'var(--color-text)', cursor: 'pointer' }}><X size={24} /></button>
               </div>
               <div style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', lineHeight: '1.6' }}>
                 <p style={{ marginBottom: '1rem' }}>Welcome to <strong>Resume Sorter</strong>! Here is how to use the platform:</p>
