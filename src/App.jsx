@@ -3,7 +3,7 @@ import { Settings, Plus, Play, LayoutDashboard, Briefcase, Users, HelpCircle, X,
 import { motion, AnimatePresence } from 'framer-motion';
 import { analyzeCandidates } from './lib/analyzer';
 
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000/api';
 
 function App() {
   const [apiKey, setApiKey] = useState('');
