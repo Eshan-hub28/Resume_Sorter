@@ -552,29 +552,37 @@ Return EXACTLY a JSON object with this schema:
               </div>
             </div>
 
-            <div style={{ padding: '1rem', borderBottom: '1px solid var(--color-border)' }}>
-              <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem', display: 'block' }}>Job Requirements / Prompt</label>
+            <div style={{ padding: '1.25rem', borderBottom: '1px solid var(--color-border)', background: 'var(--color-surface)' }}>
+              <label style={{ fontSize: '0.85rem', color: 'var(--color-text)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Target Role Requirements
+              </label>
               <textarea 
                 className="input-base" 
                 placeholder="e.g. Seeking a Senior React Developer..." 
                 value={manualJobReq}
                 onChange={(e) => setManualJobReq(e.target.value)}
-                style={{ minHeight: '70px', fontSize: '0.85rem' }}
+                style={{ 
+                  minHeight: '70px', 
+                  fontSize: '0.9rem',
+                  background: 'var(--color-bg)',
+                  border: '1px solid var(--color-border)',
+                  boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.05)'
+                }}
               />
             </div>
 
-            <div style={{ flex: 1, overflowY: 'auto', padding: '1rem' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1rem' }}>
+            <div style={{ flex: 1, overflowY: 'auto', padding: '1.25rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.25rem' }}>
                 {manualEntries.map((entry, index) => (
-                  <div key={entry.id} style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', background: 'var(--color-surface)', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
-                    <span style={{ width: '24px', color: 'var(--color-primary)', fontWeight: 'bold', fontSize: '0.85rem', textAlign: 'center', flexShrink: 0 }}>{index + 1}</span>
-                    <input type="text" placeholder="Name" className="input-base" style={{ flex: 1, padding: '0.5rem 0.75rem', fontSize: '0.85rem', border: '1px solid var(--color-border)' }} value={entry.name} onChange={(e) => setManualEntries(prev => prev.map(p => p.id === entry.id ? { ...p, name: e.target.value } : p))} />
-                    <label style={{ flex: 1, padding: '0.5rem 0.75rem', borderRadius: 'var(--radius-sm)', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--color-border)', cursor: 'pointer', fontSize: '0.8rem', color: entry.file ? 'var(--color-success)' : 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                      <Upload size={14} style={{ flexShrink: 0 }} />
-                      {entry.file ? entry.file.name : 'Choose PDF'}
+                  <div key={entry.id} style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', background: 'var(--color-surface)', padding: '1rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
+                    <span style={{ width: '28px', height: '28px', background: 'var(--color-bg)', border: '1px solid var(--color-border)', borderRadius: '50%', color: 'var(--color-primary)', fontWeight: 'bold', fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{index + 1}</span>
+                    <input type="text" placeholder="Candidate Name..." className="input-base" style={{ flex: 1, padding: '0.65rem 1rem', fontSize: '0.9rem', border: '1px solid var(--color-border)', background: 'var(--color-bg)', fontWeight: 500 }} value={entry.name} onChange={(e) => setManualEntries(prev => prev.map(p => p.id === entry.id ? { ...p, name: e.target.value } : p))} />
+                    <label style={{ flex: 1, padding: '0.65rem 1rem', borderRadius: 'var(--radius-md)', background: 'var(--color-bg)', border: '1px solid var(--color-border)', cursor: 'pointer', fontSize: '0.85rem', color: entry.file ? 'var(--color-success)' : 'var(--color-text)', display: 'flex', alignItems: 'center', gap: '0.5rem', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', fontWeight: 600, transition: 'all 0.2s' }} onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--color-primary)'} onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--color-border)'}>
+                      <Upload size={16} style={{ flexShrink: 0, opacity: 0.8 }} />
+                      {entry.file ? entry.file.name : 'Choose PDF Resume'}
                       <input type="file" accept=".pdf" style={{ display: 'none' }} onChange={(e) => { const file = e.target.files[0]; if (file) setManualEntries(prev => prev.map(p => p.id === entry.id ? { ...p, file, text: '' } : p)); }} />
                     </label>
-                    <button onClick={() => setManualEntries(prev => prev.filter(p => p.id !== entry.id))} className="btn btn-ghost btn-icon" title="Remove entry" style={{ flexShrink: 0 }}><Trash2 size={16} /></button>
+                    <button onClick={() => setManualEntries(prev => prev.filter(p => p.id !== entry.id))} className="btn btn-ghost btn-icon" title="Remove entry" style={{ flexShrink: 0, color: 'var(--color-danger)' }}><Trash2 size={18} /></button>
                   </div>
                 ))}
               </div>
@@ -733,14 +741,14 @@ Return EXACTLY a JSON object with this schema:
                 <h2 style={{ fontSize: '1.25rem' }}>Candidates</h2>
                 <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{dbCandidates.length} in database</p>
               </div>
-              <button className="badge" style={{ border: 'none', cursor: 'pointer', background: 'var(--color-success)', color: '#fff', padding: '0.4rem 1rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }} onClick={() => fileInputRef.current.click()}>
-                {isUploading ? 'Uploading...' : <><Upload size={14} /> ADD PDF</>}
+              <button className="btn btn-success" style={{ padding: '0.5rem 1rem' }} onClick={() => fileInputRef.current.click()}>
+                {isUploading ? 'Uploading...' : <><Upload size={16} /> Add PDF</>}
               </button>
               <input type="file" multiple accept=".pdf" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileUpload} />
             </div>
 
             <div style={{ padding: '1.25rem', borderBottom: '1px solid var(--color-border)', background: 'var(--color-surface)' }}>
-              <label style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}>
+              <label style={{ fontSize: '0.85rem', color: 'var(--color-text)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 <Briefcase size={16} /> Target Role Requirements
               </label>
               <textarea 
