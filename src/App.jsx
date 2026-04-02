@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Settings, Plus, Play, LayoutDashboard, Briefcase, Users, HelpCircle, X, AlertTriangle, Key, Trash2, Database, Info, ShieldCheck, CheckCircle2, Circle, Zap, Upload, FileText, UserCheck, Star, Filter, Moon, Sun, Lock } from 'lucide-react';
+import { Settings, Plus, Play, LayoutDashboard, Briefcase, Users, HelpCircle, X, AlertTriangle, Key, Trash2, Database, Info, ShieldCheck, CheckCircle2, Circle, Zap, Upload, FileText, UserCheck, Star, Filter, Moon, Sun, Lock, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { analyzeCandidates } from './lib/analyzer';
 
@@ -542,9 +542,9 @@ Return EXACTLY a JSON object with this schema:
               </div>
             </div>
 
-            <div style={{ padding: '1.25rem', borderBottom: '1px solid var(--color-border)', background: 'var(--color-surface)' }}>
+            <div style={{ padding: '1.25rem', margin: '1rem', borderRadius: 'var(--radius-lg)', background: 'var(--color-surface)', border: '1px solid var(--color-border)', boxShadow: '0 8px 30px rgba(0,0,0,0.12)' }}>
               <label style={{ fontSize: '0.85rem', color: 'var(--color-text)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                Target Role Requirements
+                <Briefcase size={16} /> Target Role Requirements
               </label>
               <textarea 
                 className="input-base" 
@@ -728,18 +728,18 @@ Return EXACTLY a JSON object with this schema:
           <>
           {/* Candidates (DB) — Left Column */}
           <div className="matches-column">
-            <div className="column-header">
+            <div className="column-header" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '1.25rem' }}>
               <div>
-                <h2 style={{ fontSize: '1.25rem' }}>Candidates</h2>
+                <h2 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>Candidates</h2>
                 <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{dbCandidates.length} in database</p>
               </div>
-              <button className="btn btn-success" style={{ padding: '0.5rem 1rem' }} onClick={() => fileInputRef.current.click()}>
-                {isUploading ? 'Uploading...' : <><Upload size={16} /> Add PDF</>}
+              <button className="btn btn-success" style={{ width: '100%', padding: '0.75rem', justifyContent: 'center' }} onClick={() => fileInputRef.current.click()}>
+                {isUploading ? 'Uploading...' : <><Upload size={16} /> Add PDF Resumes</>}
               </button>
               <input type="file" multiple accept=".pdf" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileUpload} />
             </div>
 
-            <div style={{ padding: '1.25rem', borderBottom: '1px solid var(--color-border)', background: 'var(--color-surface)' }}>
+            <div style={{ padding: '1.25rem', margin: '1rem', borderRadius: 'var(--radius-lg)', background: 'var(--color-surface)', border: '1px solid var(--color-border)', boxShadow: '0 8px 30px rgba(0,0,0,0.12)' }}>
               <label style={{ fontSize: '0.85rem', color: 'var(--color-text)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 <Briefcase size={16} /> Target Role Requirements
               </label>
@@ -814,8 +814,8 @@ Return EXACTLY a JSON object with this schema:
                   const res = resultsMap[c._id]; const isSelected = selectedDbIds.has(c._id); const isActive = activeCandidateId === c._id;
                   return (
                     <div key={c._id} className={`candidate-card ${isActive ? 'active' : ''}`} onClick={(e) => { setActiveCandidateId(c._id); toggleSelection(c._id, e); }} style={{ borderLeft: isSelected ? '4px solid var(--color-primary)' : '4px solid transparent' }}>
-                      <div onClick={(e) => toggleSelection(c._id, e)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: isSelected ? 'var(--color-primary)' : 'rgba(255,255,255,0.05)', borderRadius: '6px', width: '22px', height: '22px', border: isSelected ? 'none' : '2px solid var(--color-border)', transition: 'all 0.2s' }}>
-                        {isSelected && <CheckCircle2 size={16} color="#fff" />}
+                      <div onClick={(e) => toggleSelection(c._id, e)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: isSelected ? 'var(--color-primary)' : 'var(--color-bg)', borderRadius: '4px', width: '20px', height: '20px', border: isSelected ? '1px solid var(--color-primary)' : '1px solid var(--color-text-muted)', transition: 'all 0.2s', flexShrink: 0 }}>
+                        {isSelected && <Check size={14} strokeWidth={3} color="#fff" />}
                       </div>
                       {res?.rank && <span style={{ width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: 700, flexShrink: 0, background: res.rank === 1 ? 'linear-gradient(135deg, #f59e0b, #d97706)' : res.rank === 2 ? 'linear-gradient(135deg, #94a3b8, #64748b)' : res.rank === 3 ? 'linear-gradient(135deg, #cd7f32, #a0622e)' : 'var(--color-surface-hover)', color: res.rank <= 3 ? '#fff' : 'var(--color-text-muted)' }}>#{res.rank}</span>}
                       <div className="avatar" style={{ flexShrink: 0 }}>{c.name?.charAt(0) || 'C'}</div>
