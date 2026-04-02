@@ -50,8 +50,7 @@ function App() {
   // Candidate filtering
   const [topNFilter, setTopNFilter] = useState('all');
 
-  // Theme & Security State
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+  // Security State
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [candidateToDelete, setCandidateToDelete] = useState(null);
   const [deletePassword, setDeletePassword] = useState('');
@@ -64,14 +63,8 @@ function App() {
     const key = localStorage.getItem('gemini_api_key');
     if (key) setApiKey(key);
     fetchDbCandidates();
-    document.body.className = theme === 'light' ? 'light-theme' : '';
-  }, [theme]);
-
-  const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-  };
+    document.body.className = ''; // enforce default dark theme
+  }, []);
 
   // Fetch from MongoDB
   const fetchDbCandidates = async () => {
@@ -424,9 +417,6 @@ Return EXACTLY a JSON object with this schema:
         </div>
         
         <div className="nav-group" style={{ marginTop: 'auto' }}>
-          <button className="nav-item" onClick={toggleTheme}>
-            {theme === 'dark' ? <><Sun size={20} /> Light Mode</> : <><Moon size={20} /> Dark Mode</>}
-          </button>
           <button className="nav-item" onClick={() => setShowHelp(true)}><HelpCircle size={20} /> Help</button>
         </div>
       </aside>
@@ -943,7 +933,7 @@ Return EXACTLY a JSON object with this schema:
                     <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', margin: 0 }}>Manage your AI settings</p>
                   </div>
                 </div>
-                <button onClick={() => setShowSettings(false)} className="btn btn-ghost btn-icon" title="Close Settings"><X size={18} /></button>
+                <button onClick={() => setShowSettings(false)} className="btn btn-ghost btn-icon" style={{ color: 'var(--color-danger)', width: '40px', height: '40px' }} title="Close Settings"><X size={26} /></button>
               </div>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -1022,7 +1012,7 @@ Return EXACTLY a JSON object with this schema:
             >
               <div className="flex-row justify-between items-center" style={{ marginBottom: '2rem' }}>
                 <h3 style={{ fontSize: '1.5rem', margin: 0 }}><HelpCircle size={24} /> How to Use</h3>
-                <button onClick={() => setShowHelp(false)} className="btn btn-ghost btn-icon" title="Close Help Guide"><X size={24} /></button>
+                <button onClick={() => setShowHelp(false)} className="btn btn-ghost btn-icon" style={{ color: 'var(--color-danger)', width: '44px', height: '44px' }} title="Close Help Guide"><X size={30} /></button>
               </div>
               <div style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', lineHeight: '1.6' }}>
                 <p style={{ marginBottom: '1rem' }}>Welcome to <strong>Resume Sorter</strong>! Here is how to use the platform:</p>
