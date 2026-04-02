@@ -548,7 +548,7 @@ Return EXACTLY a JSON object with this schema:
               </div>
               <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
                 <button onClick={() => setManualEntries(prev => [...prev, { id: Date.now(), name: '', file: null, text: '' }])} style={{ flex: 1, background: 'var(--color-surface)', color: 'var(--color-text-muted)', border: '1px dashed var(--color-border)', borderRadius: 'var(--radius-md)', padding: '0.6rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', fontSize: '0.8rem' }}><Plus size={16} /> Add Resume</button>
-                <button onClick={handleManualAnalyze} disabled={isAnalyzing} style={{ flex: 1, background: 'var(--color-primary)', color: 'white', border: 'none', borderRadius: 'var(--radius-md)', padding: '0.6rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', fontWeight: 'bold', fontSize: '0.8rem' }}><Play size={14} fill="currentColor" /> Analyze</button>
+                <button onClick={handleManualAnalyze} disabled={isAnalyzing} style={{ flex: 1, background: 'var(--color-success)', color: 'white', border: 'none', borderRadius: 'var(--radius-md)', padding: '0.6rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', fontWeight: 'bold', fontSize: '0.8rem' }}><Play size={14} fill="currentColor" /> Analyze</button>
               </div>
 
               {Object.keys(manualResultsMap).length > 0 && (
@@ -634,7 +634,7 @@ Return EXACTLY a JSON object with this schema:
               </div>
             </div>
 
-            <button onClick={handleSelfAnalyze} disabled={isSelfAnalyzing} style={{ background: 'linear-gradient(135deg, #a855f7, #7c3aed)', color: 'white', border: 'none', borderRadius: 'var(--radius-md)', padding: '1rem 3rem', cursor: 'pointer', fontWeight: 700, fontSize: '1rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', boxShadow: '0 4px 20px rgba(168,85,247,0.3)' }}>
+            <button onClick={handleSelfAnalyze} disabled={isSelfAnalyzing} style={{ background: 'linear-gradient(135deg, var(--color-warning), #d97706)', color: 'white', border: 'none', borderRadius: 'var(--radius-md)', padding: '1rem 3rem', cursor: 'pointer', fontWeight: 700, fontSize: '1rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', boxShadow: '0 4px 20px rgba(245,158,11,0.3)' }}>
               {isSelfAnalyzing ? <><Star size={18} className="spin" /> Analyzing...</> : <><Play size={18} fill="currentColor" /> Analyze My Resume</>}
             </button>
 
@@ -701,8 +701,8 @@ Return EXACTLY a JSON object with this schema:
                 <h2 style={{ fontSize: '1.25rem' }}>Candidates</h2>
                 <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{dbCandidates.length} in database</p>
               </div>
-              <button className="badge" style={{ border: 'none', cursor: 'pointer', background: 'var(--color-primary)', color: '#fff' }} onClick={() => fileInputRef.current.click()}>
-                {isUploading ? 'Uploading...' : <><Upload size={14} /> Add PDF</>}
+              <button className="badge" style={{ border: 'none', cursor: 'pointer', background: 'var(--color-success)', color: '#fff', padding: '0.4rem 1rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }} onClick={() => fileInputRef.current.click()}>
+                {isUploading ? 'Uploading...' : <><Upload size={14} /> ADD PDF</>}
               </button>
               <input type="file" multiple accept=".pdf" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileUpload} />
             </div>
