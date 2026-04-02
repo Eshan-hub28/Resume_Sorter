@@ -142,6 +142,7 @@ app.delete("/api/candidates/:id", async (req, res) => {
 });
 
 // Health check
+app.get("/", (req, res) => res.json({ status: "Resume Sorter API is running" }));
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", db: mongoose.connection.readyState === 1 ? "connected" : "disconnected" });
 });
