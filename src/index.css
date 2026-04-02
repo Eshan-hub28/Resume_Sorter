@@ -25,6 +25,20 @@
   
   --shadow-glow: 0 0 30px var(--color-primary-glow);
   --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.light-theme {
+  --color-bg: #f8fafc;
+  --color-sidebar: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f1f5f9;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-primary: #7c3aed;
+  --color-primary-glow: rgba(124, 58, 237, 0.2);
+  --shadow-glass: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 * {

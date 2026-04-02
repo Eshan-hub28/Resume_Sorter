@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Settings, Plus, Play, LayoutDashboard, Briefcase, Users, HelpCircle, X, AlertTriangle, Key, Trash2, Database, Info, ShieldCheck, CheckCircle2, Circle, Zap, Upload, FileText, UserCheck, Star, Filter } from 'lucide-react';
+import { Settings, Plus, Play, LayoutDashboard, Briefcase, Users, HelpCircle, X, AlertTriangle, Key, Trash2, Database, Info, ShieldCheck, CheckCircle2, Circle, Zap, Upload, FileText, UserCheck, Star, Filter, Moon, Sun, Lock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { analyzeCandidates } from './lib/analyzer';
 
@@ -50,6 +50,13 @@ function App() {
   // Candidate filtering
   const [topNFilter, setTopNFilter] = useState('all');
 
+  // Theme & Security State
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [candidateToDelete, setCandidateToDelete] = useState(null);
+  const [deletePassword, setDeletePassword] = useState('');
+  const [deleteError, setDeleteError] = useState(false);
+
   const fileInputRef = useRef(null);
   const abortControllerRef = useRef(null);
 
@@ -57,7 +64,14 @@ function App() {
     const key = localStorage.getItem('gemini_api_key');
     if (key) setApiKey(key);
     fetchDbCandidates();
-  }, []);
+    document.body.className = theme === 'light' ? 'light-theme' : '';
+  }, [theme]);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
 
   // Fetch from MongoDB
   const fetchDbCandidates = async () => {
@@ -103,21 +117,30 @@ function App() {
     }
   };
 
-  const handleDelete = async (id, e) => {
+  const handleDelete = (id, e) => {
     e.stopPropagation();
-    const pw = window.prompt("To delete this candidate, please enter the admin password:");
-    if (pw !== 'Eshan') {
-       if (pw !== null) alert("Incorrect password. Deletion cancelled.");
+    setCandidateToDelete(id);
+    setShowDeleteModal(true);
+    setDeletePassword('');
+    setDeleteError(false);
+  };
+
+  const confirmDelete = async () => {
+    if (deletePassword !== 'Eshan') {
+       setDeleteError(true);
        return;
     }
     
     try {
-      await fetch(`${API_BASE}/candidates/${id}`, { method: 'DELETE' });
-      setDbCandidates(dbCandidates.filter(c => c._id !== id));
-      setSelectedDbIds(prev => { const next = new Set(prev); next.delete(id); return next; });
-      if (activeCandidateId === id) setActiveCandidateId(null);
+      await fetch(`${API_BASE}/candidates/${candidateToDelete}`, { method: 'DELETE' });
+      setDbCandidates(dbCandidates.filter(c => c._id !== candidateToDelete));
+      setSelectedDbIds(prev => { const next = new Set(prev); next.delete(candidateToDelete); return next; });
+      if (activeCandidateId === candidateToDelete) setActiveCandidateId(null);
+      setShowDeleteModal(false);
+      setSuccessMsg('Candidate removed from database.');
+      setTimeout(() => setSuccessMsg(''), 3000);
     } catch(err) {
-      console.error(err);
+      setError('Failed to delete candidate.');
     }
   };
 
@@ -401,6 +424,9 @@ Return EXACTLY a JSON object with this schema:
         </div>
         
         <div className="nav-group" style={{ marginTop: 'auto' }}>
+          <button className="nav-item" onClick={toggleTheme}>
+            {theme === 'dark' ? <><Sun size={20} /> Light Mode</> : <><Moon size={20} /> Dark Mode</>}
+          </button>
           <button className="nav-item" onClick={() => setShowHelp(true)}><HelpCircle size={20} /> Help</button>
         </div>
       </aside>
@@ -782,8 +808,10 @@ Return EXACTLY a JSON object with this schema:
                 return filtered.map((c) => {
                   const res = resultsMap[c._id]; const isSelected = selectedDbIds.has(c._id); const isActive = activeCandidateId === c._id;
                   return (
-                    <div key={c._id} className={`candidate-card ${isActive ? 'active' : ''}`} onClick={() => setActiveCandidateId(c._id)}>
-                      <div onClick={(e) => toggleSelection(c._id, e)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', flexShrink: 0 }}>{isSelected ? <CheckCircle2 size={20} color="var(--color-primary)" /> : <Circle size={20} color="var(--color-text-muted)" />}</div>
+                    <div key={c._id} className={`candidate-card ${isActive ? 'active' : ''}`} onClick={() => setActiveCandidateId(c._id)} style={{ borderLeft: isSelected ? '4px solid var(--color-primary)' : '4px solid transparent' }}>
+                      <div onClick={(e) => toggleSelection(c._id, e)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: isSelected ? 'var(--color-primary)' : 'rgba(255,255,255,0.05)', borderRadius: '6px', width: '22px', height: '22px', border: isSelected ? 'none' : '2px solid var(--color-border)', transition: 'all 0.2s' }}>
+                        {isSelected && <CheckCircle2 size={16} color="#fff" />}
+                      </div>
                       {res?.rank && <span style={{ width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: 700, flexShrink: 0, background: res.rank === 1 ? 'linear-gradient(135deg, #f59e0b, #d97706)' : res.rank === 2 ? 'linear-gradient(135deg, #94a3b8, #64748b)' : res.rank === 3 ? 'linear-gradient(135deg, #cd7f32, #a0622e)' : 'var(--color-surface-hover)', color: res.rank <= 3 ? '#fff' : 'var(--color-text-muted)' }}>#{res.rank}</span>}
                       <div className="avatar" style={{ flexShrink: 0 }}>{c.name?.charAt(0) || 'C'}</div>
                       <div style={{ flex: 1, minWidth: 0 }}><strong style={{ display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.name}</strong><span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{res ? (res.keywords?.[0] || 'Analyzed') : 'Pending Analysis'}</span></div>
@@ -834,6 +862,48 @@ Return EXACTLY a JSON object with this schema:
           </>
         )}
       </main>
+
+      {/* Admin Delete Modal */}
+      <AnimatePresence>
+        {showDeleteModal && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            onClick={(e) => { if (e.target === e.currentTarget) setShowDeleteModal(false); }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }}
+              style={{ background: 'var(--color-bg)', border: '1px solid var(--color-danger)', padding: '2.5rem', borderRadius: 'var(--radius-lg)', width: '100%', maxWidth: '400px', boxShadow: '0 20px 50px rgba(239, 68, 68, 0.2)' }}
+            >
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-danger)', marginBottom: '1.5rem' }}>
+                  <Lock size={32} />
+                </div>
+                <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Secure Deletion</h2>
+                <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', marginBottom: '2rem' }}>This action is permanent. Please enter the admin password to confirm.</p>
+                
+                <input 
+                  type="password" 
+                  placeholder="Admin Password" 
+                  className="input-base" 
+                  value={deletePassword} 
+                  onChange={(e) => { setDeletePassword(e.target.value); setDeleteError(false); }}
+                  onKeyDown={(e) => e.key === 'Enter' && confirmDelete()}
+                  style={{ border: deleteError ? '1px solid var(--color-danger)' : '1px solid var(--color-border)', textAlign: 'center', fontSize: '1rem', letterSpacing: '2px', marginBottom: '1.5rem' }}
+                  autoFocus
+                />
+                
+                {deleteError && <p style={{ color: 'var(--color-danger)', fontSize: '0.8rem', marginBottom: '1rem', fontWeight: 600 }}>Incorrect Password</p>}
+
+                <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
+                  <button onClick={() => setShowDeleteModal(false)} style={{ flex: 1, padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-text-muted)', cursor: 'pointer', fontWeight: 600 }}>Cancel</button>
+                  <button onClick={confirmDelete} style={{ flex: 1, padding: '0.75rem', borderRadius: 'var(--radius-md)', border: 'none', background: 'var(--color-danger)', color: 'white', cursor: 'pointer', fontWeight: 700 }}>Confirm Delete</button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Settings Modal */}
       <AnimatePresence>
