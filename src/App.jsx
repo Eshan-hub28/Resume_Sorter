@@ -935,7 +935,7 @@ Return EXACTLY a JSON object with this schema:
                     <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', margin: 0 }}>Manage your AI settings</p>
                   </div>
                 </div>
-                <button onClick={() => setShowSettings(false)} className="btn btn-ghost btn-icon" style={{ color: 'var(--color-danger)', width: '40px', height: '40px' }} title="Close Settings"><X size={26} /></button>
+                <button onClick={() => setShowSettings(false)} className="btn" style={{ background: 'rgba(239, 68, 68, 0.1)', color: 'var(--color-danger)', border: '1px solid rgba(239, 68, 68, 0.2)', width: '38px', height: '38px', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }} title="Close Settings"><X size={20} strokeWidth={2.5} /></button>
               </div>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -972,9 +972,9 @@ Return EXACTLY a JSON object with this schema:
                       <span style={{ fontSize: '0.85rem', color: apiUsage.status === 'active' ? 'var(--color-success)' : apiUsage.status === 'rate_limited' ? 'var(--color-warning)' : 'var(--color-danger)', fontWeight: 500 }}>{apiUsage.message}</span>
                     </div>
                   ) : (
-                    <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', opacity: 0.6 }}>Click "Verify Key" to check if your API key is valid and within rate limits.</p>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', opacity: 0.9, lineHeight: '1.5' }}>Click "Verify Key" to check if your API key is valid and within active rate limits.</p>
                   )}
-                  <p style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)', marginTop: '0.75rem', opacity: 0.5, lineHeight: '1.5' }}>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.75rem', opacity: 0.8, lineHeight: '1.5' }}>
                     Free tier: 30 requests/min, 1500 requests/day. Usage resets daily.
                   </p>
                 </div>
@@ -1014,7 +1014,7 @@ Return EXACTLY a JSON object with this schema:
             >
               <div className="flex-row justify-between items-center" style={{ marginBottom: '2rem' }}>
                 <h3 style={{ fontSize: '1.5rem', margin: 0 }}><HelpCircle size={24} /> How to Use</h3>
-                <button onClick={() => setShowHelp(false)} className="btn btn-ghost btn-icon" style={{ color: 'var(--color-danger)', width: '44px', height: '44px' }} title="Close Help Guide"><X size={30} /></button>
+                <button onClick={() => setShowHelp(false)} className="btn" style={{ background: 'rgba(239, 68, 68, 0.1)', color: 'var(--color-danger)', border: '1px solid rgba(239, 68, 68, 0.2)', width: '40px', height: '40px', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }} title="Close Help Guide"><X size={22} strokeWidth={2.5} /></button>
               </div>
               <div style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', lineHeight: '1.6' }}>
                 <p style={{ marginBottom: '1rem' }}>Welcome to <strong>Resume Sorter</strong>! Here is how to use the platform:</p>
