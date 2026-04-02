@@ -105,6 +105,12 @@ function App() {
 
   const handleDelete = async (id, e) => {
     e.stopPropagation();
+    const pw = window.prompt("To delete this candidate, please enter the admin password:");
+    if (pw !== 'Eshan') {
+       if (pw !== null) alert("Incorrect password. Deletion cancelled.");
+       return;
+    }
+    
     try {
       await fetch(`${API_BASE}/candidates/${id}`, { method: 'DELETE' });
       setDbCandidates(dbCandidates.filter(c => c._id !== id));
@@ -782,7 +788,7 @@ Return EXACTLY a JSON object with this schema:
                       <div className="avatar" style={{ flexShrink: 0 }}>{c.name?.charAt(0) || 'C'}</div>
                       <div style={{ flex: 1, minWidth: 0 }}><strong style={{ display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.name}</strong><span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{res ? (res.keywords?.[0] || 'Analyzed') : 'Pending Analysis'}</span></div>
                       {res && <div className="fit-score-mini" style={{ flexShrink: 0 }}><span className="percent" style={{ color: res.score >= 70 ? 'var(--color-success)' : res.score >= 50 ? 'var(--color-warning)' : 'var(--color-text)' }}>{res.score}%</span></div>}
-                      <button onClick={(e) => handleDelete(c._id, e)} style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', opacity: 0.6, flexShrink: 0, padding: '4px' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--color-danger)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--color-text-muted)'}><Trash2 size={16} /></button>
+                      <button onClick={(e) => handleDelete(c._id, e)} style={{ background: 'none', border: 'none', color: 'var(--color-danger)', cursor: 'pointer', opacity: 0.6, flexShrink: 0, padding: '4px' }} onMouseEnter={e => e.currentTarget.style.opacity = '1'} onMouseLeave={e => e.currentTarget.style.opacity = '0.6'} title="Delete candidate"><Trash2 size={16} /></button>
                     </div>
                   );
                 });
