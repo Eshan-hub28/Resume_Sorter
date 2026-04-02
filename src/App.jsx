@@ -650,24 +650,24 @@ Return EXACTLY a JSON object with this schema:
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2rem' }}>
               <div style={{ background: 'var(--color-surface)', padding: '1.5rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
-                <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem', display: 'block', fontWeight: 600, textTransform: 'uppercase' }}>Your Resume (PDF)</label>
-                <div onClick={() => selfFileRef.current?.click()} style={{ padding: '2rem', border: '2px dashed var(--color-border)', borderRadius: 'var(--radius-md)', textAlign: 'center', cursor: 'pointer', background: 'rgba(0,0,0,0.2)', color: selfFile ? 'var(--color-success)' : 'var(--color-text-muted)', transition: 'border-color 0.2s' }} onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--color-primary)'} onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--color-border)'}>
-                  <Upload size={32} style={{ margin: '0 auto 0.5rem' }} />
-                  <p style={{ fontWeight: 600 }}>{selfFile ? selfFile.name : 'Click to upload your resume'}</p>
+                <label style={{ fontSize: '0.85rem', color: 'var(--color-text)', marginBottom: '0.75rem', display: 'block', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Your Resume (PDF)</label>
+                <div onClick={() => selfFileRef.current?.click()} style={{ padding: '2.5rem 2rem', border: '2px dashed var(--color-border)', borderRadius: 'var(--radius-md)', textAlign: 'center', cursor: 'pointer', background: 'var(--color-bg)', color: selfFile ? 'var(--color-success)' : 'var(--color-text)', transition: 'all 0.2s' }} onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--color-primary)'; e.currentTarget.style.background = 'rgba(168,85,247,0.05)'; }} onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.background = 'var(--color-bg)'; }}>
+                  <Upload size={36} style={{ margin: '0 auto 0.75rem', opacity: 0.8 }} />
+                  <p style={{ fontWeight: 600, fontSize: '1rem' }}>{selfFile ? selfFile.name : 'Click to upload your resume'}</p>
                 </div>
                 <input type="file" accept=".pdf" ref={selfFileRef} style={{ display: 'none' }} onChange={e => setSelfFile(e.target.files[0])} />
                 
-                <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginTop: '1rem', marginBottom: '0.5rem', display: 'block', fontWeight: 600, textTransform: 'uppercase' }}>CGPA (Optional)</label>
+                <label style={{ fontSize: '0.85rem', color: 'var(--color-text)', marginTop: '1.5rem', marginBottom: '0.75rem', display: 'block', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>CGPA (Optional)</label>
                 <input type="text" placeholder="e.g. 8.5 / 10" className="input-base" value={selfCgpa} onChange={e => setSelfCgpa(e.target.value)} />
               </div>
               <div style={{ background: 'var(--color-surface)', padding: '1.5rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
-                <label style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem', display: 'block', fontWeight: 600, textTransform: 'uppercase' }}>Job Description You're Applying For</label>
-                <textarea className="input-base" placeholder="Paste the full job description here..." value={selfJobDesc} onChange={e => setSelfJobDesc(e.target.value)} style={{ minHeight: '200px', fontSize: '0.9rem' }} />
+                <label style={{ fontSize: '0.85rem', color: 'var(--color-text)', marginBottom: '0.75rem', display: 'block', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Job Description You're Applying For</label>
+                <textarea className="input-base" placeholder="Paste the full job description here..." value={selfJobDesc} onChange={e => setSelfJobDesc(e.target.value)} style={{ minHeight: '230px', fontSize: '0.95rem', lineHeight: '1.6' }} />
               </div>
             </div>
 
-            <button onClick={handleSelfAnalyze} disabled={isSelfAnalyzing} style={{ background: 'linear-gradient(135deg, #0ea5e9, #2563eb)', color: 'white', border: 'none', borderRadius: 'var(--radius-md)', padding: '1rem 3rem', cursor: 'pointer', fontWeight: 700, fontSize: '1rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', boxShadow: '0 4px 20px rgba(14,165,233,0.3)' }}>
-              {isSelfAnalyzing ? <><Star size={18} className="spin" /> Analyzing...</> : <><Play size={18} fill="currentColor" /> Analyze My Resume</>}
+            <button onClick={handleSelfAnalyze} disabled={isSelfAnalyzing} className="btn btn-blue-gradient" style={{ padding: '1rem 3rem', fontSize: '1.05rem', marginBottom: '2rem' }}>
+              {isSelfAnalyzing ? <><Star size={20} className="spin" /> Analyzing...</> : <><Play size={20} fill="currentColor" /> Analyze My Resume</>}
             </button>
 
             {selfResult && (
