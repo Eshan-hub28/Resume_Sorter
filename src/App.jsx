@@ -414,12 +414,12 @@ Return EXACTLY a JSON object with this schema:
         
         {/* Run Analysis - right after nav */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.5rem' }}>
-          <button className="nav-item" onClick={handleAnalyze} disabled={isAnalyzing} style={{ background: 'linear-gradient(135deg, rgba(168,85,247,0.2), rgba(124,58,237,0.1))', color: 'var(--color-text)', border: '1px solid rgba(168,85,247,0.3)' }}>
-            <Play size={20} fill={isAnalyzing ? 'currentColor' : 'none'} style={{ color: 'var(--color-primary)' }} />
+          <button className="btn btn-primary-gradient" onClick={handleAnalyze} disabled={isAnalyzing}>
+            <Play size={20} fill={isAnalyzing ? 'currentColor' : 'none'} />
             {isAnalyzing ? 'Analyzing...' : 'Run Analysis'}
           </button>
           {isAnalyzing && (
-            <button onClick={handleCancelAnalysis} style={{ background: 'var(--color-danger)', color: 'white', border: 'none', borderRadius: 'var(--radius-md)', padding: '0.5rem', cursor: 'pointer', fontWeight: 'bold', textAlign: 'center' }}>Stop</button>
+            <button className="btn btn-danger" onClick={handleCancelAnalysis} title="Cancel the current analysis process">Stop Analysis</button>
           )}
         </div>
         
@@ -574,13 +574,13 @@ Return EXACTLY a JSON object with this schema:
                       {entry.file ? entry.file.name : 'Choose PDF'}
                       <input type="file" accept=".pdf" style={{ display: 'none' }} onChange={(e) => { const file = e.target.files[0]; if (file) setManualEntries(prev => prev.map(p => p.id === entry.id ? { ...p, file, text: '' } : p)); }} />
                     </label>
-                    <button onClick={() => setManualEntries(prev => prev.filter(p => p.id !== entry.id))} style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', flexShrink: 0, padding: '4px' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--color-danger)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--color-text-muted)'}><Trash2 size={16} /></button>
+                    <button onClick={() => setManualEntries(prev => prev.filter(p => p.id !== entry.id))} className="btn btn-ghost btn-icon" title="Remove entry" style={{ flexShrink: 0 }}><Trash2 size={16} /></button>
                   </div>
                 ))}
               </div>
               <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
-                <button onClick={() => setManualEntries(prev => [...prev, { id: Date.now(), name: '', file: null, text: '' }])} style={{ flex: 1, background: 'var(--color-surface)', color: 'var(--color-text-muted)', border: '1px dashed var(--color-border)', borderRadius: 'var(--radius-md)', padding: '0.6rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', fontSize: '0.8rem' }}><Plus size={16} /> Add Resume</button>
-                <button onClick={handleManualAnalyze} disabled={isAnalyzing} style={{ flex: 1, background: 'var(--color-success)', color: 'white', border: 'none', borderRadius: 'var(--radius-md)', padding: '0.6rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', fontWeight: 'bold', fontSize: '0.8rem' }}><Play size={14} fill="currentColor" /> Analyze</button>
+                <button onClick={() => setManualEntries(prev => [...prev, { id: Date.now(), name: '', file: null, text: '' }])} className="btn btn-outline" style={{ flex: 1, borderStyle: 'dashed' }}><Plus size={16} /> Add Resume</button>
+                <button onClick={handleManualAnalyze} disabled={isAnalyzing} className="btn btn-success" style={{ flex: 1 }}><Play size={14} fill="currentColor" /> Analyze</button>
               </div>
 
               {Object.keys(manualResultsMap).length > 0 && (
@@ -791,16 +791,8 @@ Return EXACTLY a JSON object with this schema:
                   {topNFilter !== 'all' && (
                     <button 
                       onClick={() => setTopNFilter('all')} 
-                      style={{ 
-                        background: 'rgba(168,85,247,0.1)', 
-                        border: '1px solid rgba(168,85,247,0.2)', 
-                        color: 'var(--color-primary)', 
-                        fontSize: '0.7rem', 
-                        cursor: 'pointer', 
-                        padding: '0.2rem 0.5rem',
-                        borderRadius: 'var(--radius-sm)',
-                        fontWeight: 600
-                      }}
+                      className="btn btn-outline"
+                      style={{ fontSize: '0.7rem', padding: '0.2rem 0.6rem' }}
                     >
                       CLEAR
                     </button>
@@ -830,7 +822,7 @@ Return EXACTLY a JSON object with this schema:
                       <div className="avatar" style={{ flexShrink: 0 }}>{c.name?.charAt(0) || 'C'}</div>
                       <div style={{ flex: 1, minWidth: 0 }}><strong style={{ display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.name}</strong><span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{res ? (res.keywords?.[0] || 'Analyzed') : 'Pending Analysis'}</span></div>
                       {res && <div className="fit-score-mini" style={{ flexShrink: 0 }}><span className="percent" style={{ color: res.score >= 70 ? 'var(--color-success)' : res.score >= 50 ? 'var(--color-warning)' : 'var(--color-text)' }}>{res.score}%</span></div>}
-                      <button onClick={(e) => handleDelete(c._id, e)} style={{ background: 'none', border: 'none', color: 'var(--color-danger)', cursor: 'pointer', opacity: 0.6, flexShrink: 0, padding: '4px' }} onMouseEnter={e => e.currentTarget.style.opacity = '1'} onMouseLeave={e => e.currentTarget.style.opacity = '0.6'} title="Delete candidate"><Trash2 size={16} /></button>
+                      <button onClick={(e) => handleDelete(c._id, e)} className="btn btn-ghost btn-icon" style={{ color: 'var(--color-danger)' }} title="Delete candidate"><Trash2 size={16} /></button>
                     </div>
                   );
                 });
@@ -910,8 +902,8 @@ Return EXACTLY a JSON object with this schema:
                 {deleteError && <p style={{ color: 'var(--color-danger)', fontSize: '0.8rem', marginBottom: '1rem', fontWeight: 600 }}>Incorrect Password</p>}
 
                 <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
-                  <button onClick={() => setShowDeleteModal(false)} style={{ flex: 1, padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-text-muted)', cursor: 'pointer', fontWeight: 600 }}>Cancel</button>
-                  <button onClick={confirmDelete} style={{ flex: 1, padding: '0.75rem', borderRadius: 'var(--radius-md)', border: 'none', background: 'var(--color-danger)', color: 'white', cursor: 'pointer', fontWeight: 700 }}>Confirm Delete</button>
+                  <button onClick={() => setShowDeleteModal(false)} className="btn btn-outline" style={{ flex: 1, padding: '0.75rem' }}>Cancel</button>
+                  <button onClick={confirmDelete} className="btn btn-danger" style={{ flex: 1, padding: '0.75rem' }}>Confirm Delete</button>
                 </div>
               </div>
             </motion.div>
@@ -944,7 +936,7 @@ Return EXACTLY a JSON object with this schema:
                     <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', margin: 0 }}>Manage your AI settings</p>
                   </div>
                 </div>
-                <button onClick={() => setShowSettings(false)} style={{ background: 'var(--color-surface)', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><X size={18} /></button>
+                <button onClick={() => setShowSettings(false)} className="btn btn-ghost btn-icon" title="Close Settings"><X size={18} /></button>
               </div>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -970,7 +962,7 @@ Return EXACTLY a JSON object with this schema:
                     <button 
                       onClick={() => checkApiUsage()} 
                       disabled={isCheckingUsage || !apiKey}
-                      style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-sm)', padding: '0.3rem 0.75rem', color: apiKey ? 'var(--color-primary)' : 'var(--color-text-muted)', cursor: apiKey ? 'pointer' : 'not-allowed', fontSize: '0.75rem', fontWeight: 600 }}
+                      className="btn btn-outline" style={{ padding: '0.3rem 0.75rem', fontSize: '0.75rem' }}
                     >
                       {isCheckingUsage ? 'Checking...' : 'Verify Key'}
                     </button>
@@ -992,12 +984,12 @@ Return EXACTLY a JSON object with this schema:
                 <div style={{ display: 'flex', gap: '0.75rem' }}>
                   <button 
                     onClick={() => setShowSettings(false)}
-                    style={{ flex: 1, padding: '0.85rem', background: 'var(--color-surface)', color: 'var(--color-text-muted)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', cursor: 'pointer', fontWeight: 600 }}
+                    className="btn btn-outline" style={{ flex: 1, padding: '0.85rem' }}
                   >
                     Cancel
                   </button>
                   <button 
-                    style={{ flex: 2, padding: '0.85rem', background: 'linear-gradient(135deg, #a855f7, #7c3aed)', color: '#fff', border: 'none', borderRadius: 'var(--radius-md)', cursor: 'pointer', fontWeight: 700, fontSize: '0.95rem', boxShadow: '0 4px 20px rgba(168,85,247,0.3)' }} 
+                    className="btn btn-primary-gradient" style={{ flex: 2, padding: '0.85rem' }} 
                     onClick={() => { localStorage.setItem('gemini_api_key', apiKey); setShowSettings(false); setSuccessMsg('Settings saved!'); setTimeout(() => setSuccessMsg(''), 2000); }}
                   >
                     Save Settings
@@ -1023,7 +1015,7 @@ Return EXACTLY a JSON object with this schema:
             >
               <div className="flex-row justify-between items-center" style={{ marginBottom: '2rem' }}>
                 <h3 style={{ fontSize: '1.5rem', margin: 0 }}><HelpCircle size={24} /> How to Use</h3>
-                <button onClick={() => setShowHelp(false)} style={{ background: 'none', border: 'none', color: 'var(--color-text)', cursor: 'pointer' }}><X size={24} /></button>
+                <button onClick={() => setShowHelp(false)} className="btn btn-ghost btn-icon" title="Close Help Guide"><X size={24} /></button>
               </div>
               <div style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', lineHeight: '1.6' }}>
                 <p style={{ marginBottom: '1rem' }}>Welcome to <strong>Resume Sorter</strong>! Here is how to use the platform:</p>
